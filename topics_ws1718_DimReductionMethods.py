@@ -1,6 +1,9 @@
 import numpy as np
 import logging
 from numpy import linalg as LA
+
+
+
 logger = logging.getLogger(__name__)
 
 def PCA(X,n):
@@ -48,4 +51,23 @@ def LLE(X,k,n_comp):
     W = W[idx]
     V = V[:,idx]
     return V[:,0:n_comp]
+
+def diffmap(X,t,eps,n_comp):
+    m, n = X.shape
+    k=np.zeros((m,m))
+    for i in range(m):
+        for j in range(m):
+            k[i,j] = np.exp(-((X[i,0]-X[j,0])**2 + (X[i,1]-X[j,1])**2 )/eps)
+    P = k
+    d=np.zeros(m)
+    for i in range(m):
+        d[i] = np.sum(k[i,:])
+        P[i,:] = P[i,:]/d[i]
+
+    W, V = LA.eig(np.eye(m)-P)
+    idx = W.argsort()[::1]   
+    W = W[idx]
+    V = V[:,idx]
+    return V,W
+
 
