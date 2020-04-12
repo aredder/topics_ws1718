@@ -1,1 +1,1 @@
-This repository contains progress of my topics in signal processing course.
+This repository contains code on dimensionalty reduction.
